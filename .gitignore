@@ -1,14 +1,13 @@
 # Default ignored files
 /shelf/
 /workspace.xml
-.idea/
 # Editor-based HTTP Client requests
 /httpRequests/
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
-/target/
-
+target/
+.idea/
 *.class
 *.iml
 pom.xml.tag
@@ -21,7 +20,6 @@ buildNumber.properties
 .mvn/timing.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
-
 !.gitignore
 !README.md
 !pom.xml
