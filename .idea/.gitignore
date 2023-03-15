@@ -8,7 +8,7 @@
 /dataSources.local.xml
 target/
 
-.idea/*
+.idea/
 *.class
 *.iml
 pom.xml.tag
@@ -22,13 +22,3 @@ buildNumber.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 
-!.gitignore
-!README.md
-!pom.xml
-!resources/
-!src/
-!javadoc/
-*.lock
-out/
-*.jar
-*.jar
