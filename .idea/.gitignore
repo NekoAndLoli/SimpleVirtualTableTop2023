@@ -8,7 +8,7 @@
 /dataSources.local.xml
 target/
 
-.idea/
+.idea/*
 *.class
 *.iml
 pom.xml.tag
