@@ -1,4 +1,4 @@
 package www.polimi.it.Model;
 
-public class MapImage {
+public class MapImage extends Resource{
 }

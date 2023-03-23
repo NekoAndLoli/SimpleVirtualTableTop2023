@@ -1,4 +1,4 @@
 package www.polimi.it.Model;
 
-public class Music {
+public class Music extends Resource{
 }
