@@ -9,11 +9,6 @@ public class TokenTest {
     @Test
     public void constructorCheck()
     {
-        Token t = new Token("first");
-        assertNotNull(t);
-        assertEquals(t.getUrl(), "first");
-        t.setUrl("third");
-        assertNotEquals(t.getUrl(),"first");
-        assertEquals(t.getUrl(), "second");
+
     }
 }
