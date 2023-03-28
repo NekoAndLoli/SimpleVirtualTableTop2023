@@ -2,7 +2,9 @@ package www.polimi.it.Server;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Database {
     private Connection connection;
@@ -44,4 +46,20 @@ public class Database {
             }
         }
     }
+
+    public ArrayList<String> getTokens(){
+        return null;//TODO
+    }
+
+    public ArrayList<String> getMusics() throws SQLException{
+        PreparedStatement prepared = connection.prepareStatement("Select");
+        prepared.setString(1,"");
+        prepared.execute();
+        return null;//TODO
+    }
+
+    public ArrayList<String > getBGs(){
+        return null;//TODO
+    }
+
 }
