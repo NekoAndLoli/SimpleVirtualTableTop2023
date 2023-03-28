@@ -1,14 +1,14 @@
 package www.polimi.it.Server;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Database {
     private Connection connection;
     private String path;
+
+    private HashMap<Statement,PreparedStatement> statements = new HashMap<>();
 
     /**
      * Constructor
@@ -16,6 +16,33 @@ public class Database {
      */
     public Database(String path){
         this.path = path;
+    }
+
+    private void init() throws SQLException {
+        statements.put(
+                Statement.GET_MUSIC,
+                connection.prepareStatement(
+                        "SELECT name,location,is_local " +
+                                "FROM Resources JOIN Types " +
+                                "ON Resources.type = Types.type_id " +
+                                "WHERE Types.type_name = \"music\"")
+        );
+        statements.put(
+                Statement.GET_BG,
+                connection.prepareStatement(
+                        "SELECT name,location,is_local " +
+                                "FROM Resources JOIN Types " +
+                                "ON Resources.type = Types.type_id " +
+                                "WHERE Types.type_name = \"bg\"")
+        );
+        statements.put(
+                Statement.GET_TOKEN,
+                connection.prepareStatement(
+                        "SELECT name,location,is_local " +
+                                "FROM Resources JOIN Types " +
+                                "ON Resources.type = Types.type_id " +
+                                "WHERE Types.type_name = \"token\"")
+        );
     }
 
     /**
@@ -26,6 +53,7 @@ public class Database {
         String url = "jdbc:sqlite:"+path;
         try {
             connection = DriverManager.getConnection(url);
+            init();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -47,19 +75,20 @@ public class Database {
         }
     }
 
-    public ArrayList<String> getTokens(){
-        return null;//TODO
+    public ResultSet getTokens() throws SQLException {
+        return getter(Statement.GET_TOKEN);
     }
 
-    public ArrayList<String> getMusics() throws SQLException{
-        PreparedStatement prepared = connection.prepareStatement("Select");
-        prepared.setString(1,"");
-        prepared.execute();
-        return null;//TODO
+    public ResultSet getMusics() throws SQLException{
+        return getter(Statement.GET_MUSIC);
     }
 
-    public ArrayList<String > getBGs(){
-        return null;//TODO
+    public ResultSet getBGs() throws SQLException {
+        return getter(Statement.GET_BG);
+    }
+
+    public ResultSet getter(Statement statement) throws SQLException {
+        return statements.get(statement).executeQuery();
     }
 
 }
