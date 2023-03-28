@@ -1,9 +1,10 @@
 package www.polimi.it.Model;
 
+import www.polimi.it.Exception.NegativeException;
+
 import java.util.HashMap;
 
 public class Token {
-    //TODO javadoc
     private TokenImage image;
     private String owner;
 
@@ -19,18 +20,25 @@ public class Token {
     }
 
     /**
-     *
+     * Get the Image Resource
      * @return TokenImage set
      */
     public TokenImage getImage() {
         return image;
     }
 
-
+    /**
+     * Get the PlayerID of the owner
+     * @return String
+     */
     public String getOwner() {
         return owner;
     }
 
+    /**
+     * Set the owner of the Token
+     * @param owner String, playerID of the new owner
+     */
     public void setOwner(String owner) {
         this.owner = owner;
     }
@@ -49,12 +57,15 @@ public class Token {
      * @param stat String
      * @param max Integer
      * @param value Integer
-     * @throws IllegalArgumentException
+     * @throws NegativeException
      */
-    public void addStat(String stat, Integer max, Integer value) throws IllegalArgumentException{
+    public void addStat(String stat, Integer max, Integer value) throws NegativeException {
         if(stats.containsKey(stat))throw new IllegalArgumentException("Stat already assigned");
-        if(max<0)throw new IllegalArgumentException("Max is negative");
-        if(value<0)throw new IllegalArgumentException("Value is negative");
+        if(max<0)throw new NegativeException("Max is negative");
+        if(value<0)throw new NegativeException("Value is negative");
+        if(value>max) {
+            value = max;
+        }
         stats.put(stat,value);
         statsMax.put(stat,max);
     }
@@ -63,43 +74,43 @@ public class Token {
      * Adds a new stat to the token and sets its max value, current value is set to max
      * @param stat String
      * @param max Integer
-     * @throws IllegalArgumentException
+     * @throws NegativeException
      */
-    public void addStat(String stat, Integer max)throws IllegalArgumentException{
+    public void addStat(String stat, Integer max)throws NegativeException{
         addStat(stat,max,max);
     }
 
     /**
      * Adds a new stat to the token and sets its max value to 0
      * @param stat String
-     * @throws IllegalArgumentException
+     * @throws NegativeException
      */
-    public void addStat(String stat) throws IllegalArgumentException{
+    public void addStat(String stat) throws NegativeException{
         addStat(stat,0);
     }
 
     /**
      *
-     * @param stat
-     * @param value
-     * @throws IllegalArgumentException
+     * @param stat String name of the stat to set
+     * @param value Integer value to be set
+     * @throws NegativeException
      */
-    public void setStat(String stat, Integer value) throws IllegalArgumentException{
+    public void setStat(String stat, Integer value) throws NegativeException {
         if(!stats.containsKey(stat))throw new IllegalArgumentException("Stat not found");
-        if(statsMax.get(stat) < value) throw new IllegalArgumentException("value has to be lower then its max limit");
-        if(value<0)throw new IllegalArgumentException("Value is negative");
+        if(statsMax.get(stat) < value) value = statsMax.get(stat);
+        if(value<0)throw new NegativeException("Value is negative");
         stats.put(stat,value);
     }
 
     /**
      *
-     * @param stat
-     * @param max
-     * @throws IllegalArgumentException
+     * @param stat String name of the stat to set
+     * @param max Integer max value of the stat to be set
+     * @throws NegativeException
      */
-    public void setMax(String stat, Integer max)throws IllegalArgumentException{
+    public void setMax(String stat, Integer max)throws NegativeException{
         if(!stats.containsKey(stat))throw new IllegalArgumentException("Stat not found");
-        if(max<0)throw new IllegalArgumentException("Max is negative");
+        if(max<0)throw new NegativeException("Max is negative");
         statsMax.put(stat,max);
         if(stats.get(stat)<max) {
             stats.put(stat,max);
