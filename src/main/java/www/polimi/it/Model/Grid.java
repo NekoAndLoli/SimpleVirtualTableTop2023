@@ -57,4 +57,21 @@ public class Grid {
         grid = new Token[rows][columns];
     }
 
+    /**
+     *
+     * @param start
+     * @param end
+     * @param playerID
+     */
+    public void moveToken(Pos start, Pos end, String playerID){
+        //TODO
+    }
+
+    public void addToken(Pos pos, TokenImage tokenImage){
+//TODO
+    }
+
+    public void removeToken(Pos pos){//TODO
+
+    }
 }
