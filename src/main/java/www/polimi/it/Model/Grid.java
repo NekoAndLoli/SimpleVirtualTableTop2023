@@ -4,6 +4,11 @@ public class Grid {
     private Integer rows;
     private Integer columns;
     private Token[][] grid;
+
+    public Grid(){
+        new Grid(10,15);
+    }
+
     /**
      * Constructor of the grid, with its initial dimension
      * @param rows
