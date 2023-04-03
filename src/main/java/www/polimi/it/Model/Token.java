@@ -4,12 +4,11 @@ import www.polimi.it.Exception.NegativeException;
 
 import java.util.HashMap;
 
-public class Token {
+public class Token implements HasStats {
     private TokenImage image;
     private String owner;
 
-    private HashMap<String,Integer> stats = new HashMap();
-    private HashMap<String,Integer> statsMax = new HashMap();
+    private Stats stats = new Stats();
 
     /**
      * Constructor
@@ -48,8 +47,7 @@ public class Token {
      * @param stat name of the stat
      */
     public void removeStat(String stat){
-        stats.remove(stat);
-        statsMax.remove(stat);
+        stats.removeStat(stat);
     }
 
     /**
@@ -60,14 +58,7 @@ public class Token {
      * @throws NegativeException
      */
     public void addStat(String stat, Integer max, Integer value) throws NegativeException {
-        if(stats.containsKey(stat))throw new IllegalArgumentException("Stat already assigned");
-        if(max<0)throw new NegativeException("Max is negative");
-        if(value<0)throw new NegativeException("Value is negative");
-        if(value>max) {
-            value = max;
-        }
-        stats.put(stat,value);
-        statsMax.put(stat,max);
+        stats.addStat(stat,max,value);
     }
 
     /**
@@ -77,7 +68,7 @@ public class Token {
      * @throws NegativeException
      */
     public void addStat(String stat, Integer max)throws NegativeException{
-        addStat(stat,max,max);
+        stats.addStat(stat,max);
     }
 
     /**
@@ -86,7 +77,7 @@ public class Token {
      * @throws NegativeException
      */
     public void addStat(String stat) throws NegativeException{
-        addStat(stat,0);
+        stats.addStat(stat);
     }
 
     /**
@@ -96,10 +87,7 @@ public class Token {
      * @throws NegativeException
      */
     public void setStat(String stat, Integer value) throws NegativeException {
-        if(!stats.containsKey(stat))throw new IllegalArgumentException("Stat not found");
-        if(statsMax.get(stat) < value) value = statsMax.get(stat);
-        if(value<0)throw new NegativeException("Value is negative");
-        stats.put(stat,value);
+        setStat(stat,value);
     }
 
     /**
@@ -109,11 +97,6 @@ public class Token {
      * @throws NegativeException
      */
     public void setMax(String stat, Integer max)throws NegativeException{
-        if(!stats.containsKey(stat))throw new IllegalArgumentException("Stat not found");
-        if(max<0)throw new NegativeException("Max is negative");
-        statsMax.put(stat,max);
-        if(stats.get(stat)<max) {
-            stats.put(stat,max);
-        }
+        setMax(stat,max);
     }
 }
