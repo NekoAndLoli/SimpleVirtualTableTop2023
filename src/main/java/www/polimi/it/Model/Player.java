@@ -10,10 +10,6 @@ public class Player implements HasStats {
         return playerID;
     }
 
-    public void setPlayerID(String playerID) {
-        this.playerID = playerID;
-    }
-
     public Player(String playerID) {
         this.playerID = playerID;
     }

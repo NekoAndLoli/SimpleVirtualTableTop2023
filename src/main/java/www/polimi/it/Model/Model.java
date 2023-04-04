@@ -55,19 +55,19 @@ public class Model {
         //TODO
     }
 
-    public void uploadMusic(){
+    public void uploadMusic(){//TODO
 
     }
 
-    public void uploadMap(){
+    public void uploadMap(){//TODO
 
     }
 
-    public void moveToken(){
+    public void moveToken(){//TODO
 
     }
 
-    public void addPlayer(){
+    public void addPlayer(){//TODO
 
     }
 

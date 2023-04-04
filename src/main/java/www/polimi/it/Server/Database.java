@@ -1,5 +1,6 @@
 package www.polimi.it.Server;
 
+import java.net.URI;
 import java.sql.*;
 import java.util.HashMap;
 
@@ -114,4 +115,14 @@ public class Database {
         return statements.get(statement).executeQuery();
     }
 
+    public void insertMap(URI uri){
+        //TODO
+    }
+
+    public void insertToken(URI uri){//TODO
+
+    }
+    public void insertMusic(URI uri){//TODO
+
+    }
 }

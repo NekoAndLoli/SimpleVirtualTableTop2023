@@ -14,4 +14,20 @@ public class Resource {
         this.isLocal = isLocal;
         this.type = type;
     }
+
+    public URI getUri() {
+        return uri;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isLocal() {
+        return isLocal;
+    }
+
+    public ResourceType getType() {
+        return type;
+    }
 }
