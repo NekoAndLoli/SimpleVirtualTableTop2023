@@ -1,5 +1,7 @@
 package www.polimi.it.Model;
 
+import www.polimi.it.Exception.NegativeException;
+
 public class Pos {
     private Integer x;
     private Integer y;
@@ -10,9 +12,9 @@ public class Pos {
      * @param y Integer
      * @throws IllegalArgumentException when input is negative
      */
-    public Pos(Integer x, Integer y)throws IllegalArgumentException{
-        if(x<0)throw new IllegalArgumentException("X negative");
-        if(y<0)throw new IllegalArgumentException("Y negative");
+    public Pos(Integer x, Integer y)throws NegativeException{
+        if(x<0)throw new NegativeException("X negative");
+        if(y<0)throw new NegativeException("Y negative");
         this.x = x;
         this.y = y;
     }
@@ -22,8 +24,8 @@ public class Pos {
      * @param x the new Integer to be assigned
      * @throws IllegalArgumentException when negative
      */
-    public void setX(Integer x) throws IllegalArgumentException {
-        if(x<0)throw new IllegalArgumentException("X negative");
+    public void setX(Integer x) throws NegativeException {
+        if(x<0)throw new NegativeException("X negative");
         this.x = x;
     }
 
@@ -32,8 +34,8 @@ public class Pos {
      * @param y the new Integer to be assigned
      * @throws IllegalArgumentException when negative
      */
-    public void setY(Integer y) throws IllegalArgumentException {
-        if(y<0)throw new IllegalArgumentException("Y negative");
+    public void setY(Integer y) throws NegativeException {
+        if(y<0)throw new NegativeException("Y negative");
         this.y = y;
     }
 

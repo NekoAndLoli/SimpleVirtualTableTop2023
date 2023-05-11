@@ -1,5 +1,7 @@
 package www.polimi.it.Model;
 
+import www.polimi.it.Exception.NegativeException;
+
 import java.net.URI;
 import java.util.ArrayList;
 
@@ -43,7 +45,7 @@ public class Model {
         //TODO
     }
 
-    public void setPlayerStats(Player player,String stat, Integer value, Integer max){
+    public void setPlayerStats(Player player,String stat, Integer value, Integer max) throws NegativeException {
         setStats(new Pos(-1,-1),stat,value,max);
     }
 
