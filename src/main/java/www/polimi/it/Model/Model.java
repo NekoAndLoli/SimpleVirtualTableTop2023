@@ -70,7 +70,6 @@ public class Model {
     }
 
     public void addPlayer(){//TODO
-
     }
 
 
