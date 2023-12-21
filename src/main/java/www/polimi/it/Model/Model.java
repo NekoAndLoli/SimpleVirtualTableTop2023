@@ -11,6 +11,7 @@ public class Model {
     private Grid grid = new Grid();
     private MapImage backGround;
     private Music bgm;
+    private ResourceSet resourceSet = ResourceSet.getInstance();
 
     public Model(String dm){
         this.dm = new Player(dm);
@@ -21,11 +22,13 @@ public class Model {
         //TODO
     }
 
-    public void addToken(URI uri, Pos pos){
+    public Token addToken(URI uri, Pos pos){
+        TokenImage image = resourceSet.getToken(uri);
+        Token token = new Token()
         //TODO
     }
 
-    public void associateToken(){
+    public void associateToken(Token token, String playerId){
         //TODO
     }
 
