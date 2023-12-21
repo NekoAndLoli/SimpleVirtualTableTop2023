@@ -15,6 +15,17 @@ public class Token implements HasStats {
      * @param image TokenImage to be set
      */
     public Token(TokenImage image){
+        this.owner = "";
+        this.image = image;
+    }
+
+    /**
+     *
+     * @param image TokenImage to be set
+     * @param owner DM, .playerId or ""
+     */
+    public Token(TokenImage image, String owner){
+        this.owner = owner;
         this.image = image;
     }
 
@@ -98,5 +109,9 @@ public class Token implements HasStats {
      */
     public void setMax(String stat, Integer max)throws NegativeException{
         setMax(stat,max);
+    }
+
+    public boolean canMove(String playerID) {
+        return playerID == "DM" || playerID == owner || owner == "";
     }
 }

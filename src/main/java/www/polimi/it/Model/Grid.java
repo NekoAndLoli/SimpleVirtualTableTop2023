@@ -1,5 +1,10 @@
 package www.polimi.it.Model;
 
+import www.polimi.it.Exception.NoTokenException;
+import www.polimi.it.Exception.NotYourTokenException;
+import www.polimi.it.Exception.PosNotFreeException;
+import www.polimi.it.Exception.PosOutOfBoundException;
+
 public class Grid {
     private Integer rows;
     private Integer columns;
@@ -66,17 +71,60 @@ public class Grid {
      *
      * @param start
      * @param end
-     * @param playerID
+     * @param playerID of the player doing this action
+     * @throws Exception
      */
-    public void moveToken(Pos start, Pos end, String playerID){
-        //TODO
+    public void moveToken(Pos start, Pos end, String playerID) throws Exception {
+        if(checkPos(start) && checkPos(end)){
+            if(!grid[end.getX()][end.getY()].canMove(playerID)) {//check owner
+                throw new NotYourTokenException();
+            }
+            if (grid[end.getX()][end.getY()] != null) {
+                throw new PosNotFreeException();
+            }
+            if (grid[start.getX()][start.getY()] == null) {
+                throw new NoTokenException();
+            }
+            grid[end.getX()][end.getY()] = grid[start.getX()][start.getY()];
+            removeToken(start);
+        }
+        else {
+            throw new PosOutOfBoundException();
+        }
     }
 
+    /**
+     *
+     * @param pos
+     * @param tokenImage
+     */
     public void addToken(Pos pos, TokenImage tokenImage){
-//TODO
+        Token newToken = new Token(tokenImage);
+        grid[pos.getX()][pos.getY()] = newToken;
     }
 
-    public void removeToken(Pos pos){//TODO
+    /**
+     *
+     * @param pos
+     * @throws Exception
+     */
+    public void removeToken(Pos pos) throws Exception {
+        if (!checkPos(pos)){
+            throw new PosOutOfBoundException();
+        }
+        if (grid[pos.getX()][pos.getY()]==null){
+            throw new NoTokenException();
+        }
+        grid[pos.getX()][pos.getY()] = null;
+    }
 
+    private boolean checkPos(Pos   pos){
+        if(pos.getX()<0 || pos.getY()<0){
+            return false;
+        }
+        else if(pos.getX()>=rows || pos.getY()>= columns){
+            return false;
+        }
+        return  true;
     }
 }
