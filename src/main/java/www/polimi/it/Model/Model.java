@@ -1,6 +1,7 @@
 package www.polimi.it.Model;
 
 import www.polimi.it.Exception.NegativeException;
+import www.polimi.it.Exception.PosNotFreeException;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -22,10 +23,9 @@ public class Model {
         //TODO
     }
 
-    public Token addToken(URI uri, Pos pos){
+    public void addToken(URI uri, Pos pos) throws PosNotFreeException {
         TokenImage image = resourceSet.getToken(uri);
-        Token token = new Token()
-        //TODO
+        grid.addToken(pos,image);
     }
 
     public void associateToken(Token token, String playerId){
@@ -33,7 +33,18 @@ public class Model {
     }
 
     public void changeMap(URI uri){
-        //TODO
+        backGround = new MapImage(uri,"",false);
+    }
+    public MapImage getBackGround(){
+        return backGround;
+    }
+
+    public Player getDm(){
+        return dm;
+    }
+
+    public ArrayList<Player> getPlayers(){
+        return players;
     }
 
     public void changeMusic(URI uri){
@@ -72,7 +83,13 @@ public class Model {
 
     }
 
-    public void addPlayer(){//TODO
+    public void addPlayer(String playerId){
+        Player player = new Player(playerId);
+        players.add(player);
+    }
+
+    public void setGrid(int rows, int columns) throws NegativeException {
+        grid.setGrid(rows,columns);
     }
 
 

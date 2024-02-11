@@ -1,9 +1,6 @@
 package www.polimi.it.Model;
 
-import www.polimi.it.Exception.NoTokenException;
-import www.polimi.it.Exception.NotYourTokenException;
-import www.polimi.it.Exception.PosNotFreeException;
-import www.polimi.it.Exception.PosOutOfBoundException;
+import www.polimi.it.Exception.*;
 
 public class Grid {
     private Integer rows;
@@ -46,7 +43,8 @@ public class Grid {
      * Sets the new column height (number of rows in a column) and regenerates a new grid
      * @param rows
      */
-    public void setRows(Integer rows) {
+    public void setRows(Integer rows) throws NegativeException {
+        if(rows<0)throw new NegativeException("rows negative");
         this.rows = rows;
         generateGrid();
     }
@@ -55,7 +53,16 @@ public class Grid {
      * Sets the new row length (number of columns in a row) and regenerates a new grid
      * @param columns
      */
-    public void setColumns(Integer columns) {
+    public void setColumns(Integer columns) throws NegativeException {
+        if(columns<0)throw new NegativeException("columns negative");
+        this.columns = columns;
+        generateGrid();
+    }
+
+    public void setGrid(Integer rows,Integer columns) throws NegativeException {
+        if(rows<0)throw new NegativeException("rows negative");
+        if(columns<0)throw new NegativeException("columns negative");
+        this.rows = rows;
         this.columns = columns;
         generateGrid();
     }
@@ -98,8 +105,9 @@ public class Grid {
      * @param pos
      * @param tokenImage
      */
-    public void addToken(Pos pos, TokenImage tokenImage){
+    public void addToken(Pos pos, TokenImage tokenImage)throws PosNotFreeException{
         Token newToken = new Token(tokenImage);
+        if (grid[pos.getX()][pos.getY()]!=null)throw new PosNotFreeException();
         grid[pos.getX()][pos.getY()] = newToken;
     }
 
