@@ -1,7 +1,6 @@
 package www.polimi.it.Model;
 
-import www.polimi.it.Exception.NegativeException;
-import www.polimi.it.Exception.PosNotFreeException;
+import www.polimi.it.Exception.*;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -79,7 +78,7 @@ public class Model {
 
     }
 
-    public void moveToken(Pos start, Pos end, String playerID) throws Exception {//TODO
+    public void moveToken(Pos start, Pos end, String playerID) throws NoTokenException, PosNotFreeException, NotYourTokenException, PosOutOfBoundException {//TODO
         grid.moveToken(start,end,playerID);
     }
 
@@ -92,5 +91,7 @@ public class Model {
         grid.setGrid(rows,columns);
     }
 
-
+    public boolean checkDm(String playerId){
+        return this.dm.equals(playerId);
+    }
 }

@@ -12,8 +12,8 @@ public class AddTokenAction extends Action{
     private final Pos pos;
     private final URI tokenImage;
 
-    public AddTokenAction(ActionType type, Pos pos, URI token){
-        super(type);
+    public AddTokenAction(String playerId, Pos pos, URI token){
+        super(ActionType.ADD_TOKEN,playerId);
         this.pos = pos;
         this.tokenImage = token;
     }

@@ -81,7 +81,7 @@ public class Grid {
      * @param playerID of the player doing this action
      * @throws Exception
      */
-    public void moveToken(Pos start, Pos end, String playerID) throws Exception {
+    public void moveToken(Pos start, Pos end, String playerID) throws NotYourTokenException, PosNotFreeException, NoTokenException, PosOutOfBoundException {
         if(checkPos(start) && checkPos(end)){
             if(!grid[end.getX()][end.getY()].canMove(playerID)) {//check owner
                 throw new NotYourTokenException();
@@ -116,7 +116,7 @@ public class Grid {
      * @param pos
      * @throws Exception
      */
-    public void removeToken(Pos pos) throws Exception {
+    public void removeToken(Pos pos) throws PosOutOfBoundException, NoTokenException {
         if (!checkPos(pos)){
             throw new PosOutOfBoundException();
         }
