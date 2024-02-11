@@ -1,6 +1,6 @@
 package www.polimi.it.Controller;
 
-import www.polimi.it.Model.Action;
+import www.polimi.it.Actions.Action;
 import www.polimi.it.Model.Model;
 import www.polimi.it.Server.Database;
 

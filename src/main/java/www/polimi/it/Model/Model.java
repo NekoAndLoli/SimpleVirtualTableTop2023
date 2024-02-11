@@ -79,8 +79,8 @@ public class Model {
 
     }
 
-    public void moveToken(){//TODO
-
+    public void moveToken(Pos start, Pos end, String playerID) throws Exception {//TODO
+        grid.moveToken(start,end,playerID);
     }
 
     public void addPlayer(String playerId){
