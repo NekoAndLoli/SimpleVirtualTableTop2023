@@ -8,7 +8,7 @@ public class Grid {
     private Token[][] grid;
 
     public Grid(){
-        new Grid(10,15);
+        this(10,15);
     }
 
     /**
@@ -127,12 +127,19 @@ public class Grid {
     }
 
     private boolean checkPos(Pos   pos){
-        if(pos.getX()<0 || pos.getY()<0){
-            return false;
-        }
-        else if(pos.getX()>=rows || pos.getY()>= columns){
+        if(pos.getX()>=rows || pos.getY()>= columns){
             return false;
         }
         return  true;
+    }
+
+    public Token getToken(Pos pos) {
+        return grid[pos.getX()][pos.getY()];
+    }
+
+    public TokenImage getTokenImage(Pos pos){
+        Token t = getToken(pos);
+        if(t == null)return null;
+        return t.getImage();
     }
 }
