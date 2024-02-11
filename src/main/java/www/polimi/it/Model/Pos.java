@@ -2,6 +2,8 @@ package www.polimi.it.Model;
 
 import www.polimi.it.Exception.NegativeException;
 
+import java.util.Objects;
+
 public class Pos {
     private Integer x;
     private Integer y;
@@ -53,5 +55,18 @@ public class Pos {
      */
     public Integer getY() {
         return y;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pos pos = (Pos) o;
+        return Objects.equals(x, pos.x) && Objects.equals(y, pos.y);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 }

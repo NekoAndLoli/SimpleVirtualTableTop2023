@@ -4,10 +4,7 @@ import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import www.polimi.it.Exception.NegativeException;
-import www.polimi.it.Exception.NoTokenException;
-import www.polimi.it.Exception.PosNotFreeException;
-import www.polimi.it.Exception.PosOutOfBoundException;
+import www.polimi.it.Exception.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -44,6 +41,31 @@ public class GridTest extends TestCase {
 
     public void testMoveToken() {
         //TODO
+        try {
+            Pos pos = new Pos(0, 0);
+            TokenImage image = new TokenImage(new URI("uri"), "", false);
+            grid.addToken(pos, image);
+            assertEquals(image, grid.getTokenImage(pos));
+            Pos pos2 = new Pos(1,1);
+            Pos posOut = new Pos(1,15);
+            //move the cell to itself
+            Assertions.assertDoesNotThrow(()->grid.moveToken(pos2,pos2,"gianni"));
+            //move an empty cell
+            Assertions.assertThrows(NoTokenException.class,()->grid.moveToken(pos2,pos,""));
+            //move to out of bound
+            Assertions.assertThrows(PosOutOfBoundException.class,()->grid.moveToken(pos,posOut,""));
+
+            //move a proper token
+            grid.moveToken(pos,pos2,"");
+            assertEquals(image, grid.getTokenImage(pos2));
+            //create a new token in 0 0 and move it back
+            grid.addToken(pos,image);
+            Assertions.assertThrows(PosNotFreeException.class,()->grid.moveToken(pos,pos2,"gianni"));
+
+        }catch (PosNotFreeException | NegativeException | URISyntaxException | NotYourTokenException | NoTokenException | PosOutOfBoundException e){
+            e.printStackTrace();
+            assertTrue(false);
+        }
     }
 
     public void testAddToken() {

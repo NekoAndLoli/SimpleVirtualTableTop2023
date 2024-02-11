@@ -111,6 +111,11 @@ public class Token implements HasStats {
         setMax(stat,max);
     }
 
+    /**
+     *
+     * @param playerID
+     * @return true if player is DM, player is owner, or owner is ""
+     */
     public boolean canMove(String playerID) {
         return playerID == "DM" || playerID == owner || owner == "";
     }

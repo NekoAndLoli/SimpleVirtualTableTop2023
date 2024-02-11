@@ -82,15 +82,18 @@ public class Grid {
      * @throws Exception
      */
     public void moveToken(Pos start, Pos end, String playerID) throws NotYourTokenException, PosNotFreeException, NoTokenException, PosOutOfBoundException {
+        if(start == null || end == null)throw new PosOutOfBoundException();
+        else if(start.equals(end))return;
         if(checkPos(start) && checkPos(end)){
-            if(!grid[end.getX()][end.getY()].canMove(playerID)) {//check owner
+
+            if (grid[start.getX()][start.getY()] == null) {
+                throw new NoTokenException();
+            }
+            if(!grid[start.getX()][start.getY()].canMove(playerID)) {//check owner
                 throw new NotYourTokenException();
             }
             if (grid[end.getX()][end.getY()] != null) {
                 throw new PosNotFreeException();
-            }
-            if (grid[start.getX()][start.getY()] == null) {
-                throw new NoTokenException();
             }
             grid[end.getX()][end.getY()] = grid[start.getX()][start.getY()];
             removeToken(start);
