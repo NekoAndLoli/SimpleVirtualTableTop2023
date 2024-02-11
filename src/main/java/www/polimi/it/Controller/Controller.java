@@ -12,7 +12,12 @@ public class Controller {
     private boolean closed = false;
 
     public void manageAction(Action action){
-        //TODO
+        try {
+            action.run(model);
+        } catch (Exception e) {
+            //TODO manage exceptions
+            e.printStackTrace();
+        }
     }
 
     public Controller(int roomId, String pw, String playerID){
