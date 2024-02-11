@@ -36,4 +36,13 @@ public class Controller {
     public boolean isClosed(){
         return closed;
     }
+
+    public boolean checkPw(String pw){
+        return pw.equals(pw);
+    }
+
+    public void addPlayer(String playerID){
+        model.addPlayer(playerID);
+    }
+
 }

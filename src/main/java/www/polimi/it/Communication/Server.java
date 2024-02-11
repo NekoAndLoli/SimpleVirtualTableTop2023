@@ -1,25 +1,24 @@
 package www.polimi.it.Communication;
 
-import www.polimi.it.Model.Player;
 
 
 
 import org.java_websocket.WebSocket;
-import org.java_websocket.WebSocketImpl;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
+import www.polimi.it.Controller.Controller;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Server extends WebSocketServer{
+    private HashMap<Integer,Controller> rooms;
+    Integer roomID;
 
     public Server(int port) {
         super(new InetSocketAddress(port));
+        rooms = new HashMap<>();
     }
 
     @Override
@@ -47,16 +46,22 @@ public class Server extends WebSocketServer{
         System.out.println("Server started!");
     }
 
-    private void CreateRoom(){
-
+    private void CreateRoom(String dm,String pw){
+        Controller room = new Controller(roomID,pw,dm);
+        rooms.put(roomID,room);
+        roomID++;
     }
 
     private void joinRoom(String playerId, Integer roomId, String pw) {
-
+        //TODO maybe better to check in controller
+        Controller room = rooms.get(roomId);
+        if(room.checkPw(pw)){
+            room.addPlayer(playerId);
+        }
     }
 
     private void deleteRoom(Integer roomId){
-
+        rooms.remove(roomId);
     }
 
 }
