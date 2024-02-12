@@ -9,7 +9,7 @@ import org.java_websocket.server.WebSocketServer;
 import www.polimi.it.Actions.Action;
 import www.polimi.it.Actions.AddTokenAction;
 import www.polimi.it.Controller.Controller;
-import www.polimi.it.Exception.PlayerOnlineException;
+import www.polimi.it.Exception.*;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -50,10 +50,26 @@ public class Server extends WebSocketServer{
 
     @Override
     public void onMessage(WebSocket webSocket, String s) {
-        //TODO
+        //TODO everything
         Controller room = player_room.get(webSocket);
         if(room!=null){
-            room.manageAction(buildAction(s));
+            try {
+                room.manageAction(buildAction(s));
+            } catch (NoTokenException e) {
+                e.printStackTrace();
+            } catch (PosNotFreeException e) {
+                e.printStackTrace();
+            } catch (NotYourTokenException e) {
+                e.printStackTrace();
+            } catch (NotDMException e) {
+                e.printStackTrace();
+            } catch (NegativeException e) {
+                e.printStackTrace();
+            } catch (PosOutOfBoundException e) {
+                e.printStackTrace();
+            } catch (NoPlayerException e) {
+                e.printStackTrace();
+            }
         }
         System.out.println(webSocket + ": " + s);
     }

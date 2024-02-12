@@ -12,24 +12,8 @@ public class Controller {
     private final String pw;
     private boolean closed = false;
 
-    public void manageAction(Action action){
-        try {
+    public void manageAction(Action action) throws NoTokenException, PosNotFreeException, NotYourTokenException, NotDMException, NegativeException, PosOutOfBoundException, NoPlayerException {
             action.run(model);
-        } catch (NoTokenException e) {
-            e.printStackTrace();
-        } catch (PosNotFreeException e) {
-            e.printStackTrace();
-        } catch (NotYourTokenException e) {
-            e.printStackTrace();
-        } catch (NotDMException e) {
-            e.printStackTrace();
-        } catch (NegativeException e) {
-            e.printStackTrace();
-        } catch (PosOutOfBoundException e) {
-            e.printStackTrace();
-        } catch (NoPlayerException e) {
-            e.printStackTrace();
-        }
     }
 
     public Controller(int roomId, String pw, String playerID){
