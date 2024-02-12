@@ -1,7 +1,7 @@
 package www.polimi.it.Controller;
 
 import www.polimi.it.Actions.Action;
-import www.polimi.it.Exception.PlayerOnlineException;
+import www.polimi.it.Exception.*;
 import www.polimi.it.Model.Model;
 import www.polimi.it.Server.Database;
 
@@ -15,8 +15,19 @@ public class Controller {
     public void manageAction(Action action){
         try {
             action.run(model);
-        } catch (Exception e) {
-            //TODO manage exceptions
+        } catch (NoTokenException e) {
+            e.printStackTrace();
+        } catch (PosNotFreeException e) {
+            e.printStackTrace();
+        } catch (NotYourTokenException e) {
+            e.printStackTrace();
+        } catch (NotDMException e) {
+            e.printStackTrace();
+        } catch (NegativeException e) {
+            e.printStackTrace();
+        } catch (PosOutOfBoundException e) {
+            e.printStackTrace();
+        } catch (NoPlayerException e) {
             e.printStackTrace();
         }
     }

@@ -1,6 +1,7 @@
 package www.polimi.it.Actions;
 
 import www.polimi.it.Exception.PosNotFreeException;
+import www.polimi.it.Exception.PosOutOfBoundException;
 import www.polimi.it.Model.Model;
 import www.polimi.it.Model.Pos;
 import www.polimi.it.Model.TokenImage;
@@ -18,7 +19,7 @@ public class AddTokenAction extends Action{
         this.tokenImage = token;
     }
 
-    public void run(Model model) throws Exception {
+    public void run(Model model) throws PosNotFreeException, PosOutOfBoundException {
         model.addToken(tokenImage,pos);
     }
 }
