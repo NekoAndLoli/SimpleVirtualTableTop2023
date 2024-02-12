@@ -78,10 +78,10 @@ public class Grid {
      *
      * @param start
      * @param end
-     * @param playerID of the player doing this action
+     * @param player doing this action
      * @throws Exception
      */
-    public void moveToken(Pos start, Pos end, String playerID) throws NotYourTokenException, PosNotFreeException, NoTokenException, PosOutOfBoundException {
+    public void moveToken(Pos start, Pos end, Player player) throws NotYourTokenException, PosNotFreeException, NoTokenException, PosOutOfBoundException {
         if(start == null || end == null)throw new PosOutOfBoundException();
         else if(start.equals(end))return;
         if(checkPos(start) && checkPos(end)){
@@ -89,7 +89,7 @@ public class Grid {
             if (grid[start.getX()][start.getY()] == null) {
                 throw new NoTokenException();
             }
-            if(!grid[start.getX()][start.getY()].canMove(playerID)) {//check owner
+            if(!grid[start.getX()][start.getY()].canMove(player)) {//check owner
                 throw new NotYourTokenException();
             }
             if (grid[end.getX()][end.getY()] != null) {
@@ -108,8 +108,9 @@ public class Grid {
      * @param pos
      * @param tokenImage
      */
-    public void addToken(Pos pos, TokenImage tokenImage)throws PosNotFreeException{
+    public void addToken(Pos pos, TokenImage tokenImage) throws PosNotFreeException, PosOutOfBoundException {
         Token newToken = new Token(tokenImage);
+        if(!checkPos(pos))throw new PosOutOfBoundException();
         if (grid[pos.getX()][pos.getY()]!=null)throw new PosNotFreeException();
         grid[pos.getX()][pos.getY()] = newToken;
     }

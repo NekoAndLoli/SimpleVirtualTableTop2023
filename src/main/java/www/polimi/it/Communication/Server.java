@@ -7,6 +7,7 @@ import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 import www.polimi.it.Controller.Controller;
+import www.polimi.it.Exception.PlayerOnlineException;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -56,7 +57,11 @@ public class Server extends WebSocketServer{
         //TODO maybe better to check in controller
         Controller room = rooms.get(roomId);
         if(room.checkPw(pw)){
-            room.addPlayer(playerId);
+            try {
+                room.addPlayer(playerId);
+            }catch (PlayerOnlineException e){
+                //TODO reply with name taken
+            }
         }
     }
 

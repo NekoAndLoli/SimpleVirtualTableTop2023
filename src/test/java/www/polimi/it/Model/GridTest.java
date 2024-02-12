@@ -42,6 +42,8 @@ public class GridTest extends TestCase {
     public void testMoveToken() {
         //TODO
         try {
+            Player gianni = new Player("gianni");
+            Player player = new Player("");
             Pos pos = new Pos(0, 0);
             TokenImage image = new TokenImage(new URI("uri"), "", false);
             grid.addToken(pos, image);
@@ -49,18 +51,18 @@ public class GridTest extends TestCase {
             Pos pos2 = new Pos(1,1);
             Pos posOut = new Pos(1,15);
             //move the cell to itself
-            Assertions.assertDoesNotThrow(()->grid.moveToken(pos2,pos2,"gianni"));
+            Assertions.assertDoesNotThrow(()->grid.moveToken(pos2,pos2,gianni));
             //move an empty cell
-            Assertions.assertThrows(NoTokenException.class,()->grid.moveToken(pos2,pos,""));
+            Assertions.assertThrows(NoTokenException.class,()->grid.moveToken(pos2,pos,player));
             //move to out of bound
-            Assertions.assertThrows(PosOutOfBoundException.class,()->grid.moveToken(pos,posOut,""));
+            Assertions.assertThrows(PosOutOfBoundException.class,()->grid.moveToken(pos,posOut,player));
 
             //move a proper token
-            grid.moveToken(pos,pos2,"");
+            grid.moveToken(pos,pos2,player);
             assertEquals(image, grid.getTokenImage(pos2));
             //create a new token in 0 0 and move it back
             grid.addToken(pos,image);
-            Assertions.assertThrows(PosNotFreeException.class,()->grid.moveToken(pos,pos2,"gianni"));
+            Assertions.assertThrows(PosNotFreeException.class,()->grid.moveToken(pos,pos2,gianni));
 
         }catch (PosNotFreeException | NegativeException | URISyntaxException | NotYourTokenException | NoTokenException | PosOutOfBoundException e){
             e.printStackTrace();
@@ -76,7 +78,10 @@ public class GridTest extends TestCase {
             assertEquals(image,grid.getTokenImage(pos));
             Pos finalPos = pos;
             Assertions.assertThrows(PosNotFreeException.class,()->grid.addToken(finalPos,image));
-        }catch (NegativeException | URISyntaxException | PosNotFreeException e){
+            Pos posOut = new Pos(20,20);
+            Assertions.assertThrows(PosOutOfBoundException.class,()->grid.addToken(posOut,image));
+
+        }catch (NegativeException | URISyntaxException | PosNotFreeException | PosOutOfBoundException e){
             e.printStackTrace();
             assertEquals(0,1);
         }

@@ -113,10 +113,10 @@ public class Token implements HasStats {
 
     /**
      *
-     * @param playerID
+     * @param player
      * @return true if player is DM, player is owner, or owner is ""
      */
-    public boolean canMove(String playerID) {
-        return playerID == "DM" || playerID == owner || owner == "";
+    public boolean canMove(Player player) {
+        return player.isDM()  || player.getPlayerID().equals(owner) || owner.equals("");
     }
 }

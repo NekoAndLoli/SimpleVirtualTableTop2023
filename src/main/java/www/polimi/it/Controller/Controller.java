@@ -1,6 +1,7 @@
 package www.polimi.it.Controller;
 
 import www.polimi.it.Actions.Action;
+import www.polimi.it.Exception.PlayerOnlineException;
 import www.polimi.it.Model.Model;
 import www.polimi.it.Server.Database;
 
@@ -41,7 +42,7 @@ public class Controller {
         return pw.equals(pw);
     }
 
-    public void addPlayer(String playerID){
+    public void addPlayer(String playerID) throws PlayerOnlineException {
         model.addPlayer(playerID);
     }
 

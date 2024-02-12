@@ -45,4 +45,8 @@ public class Player implements HasStats {
         stats.setMax(stat,max);
     }
 
+    public boolean isDM(){
+        return false;
+    }
+
 }

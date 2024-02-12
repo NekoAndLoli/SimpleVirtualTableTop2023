@@ -4,26 +4,27 @@ import www.polimi.it.Exception.*;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Model {
-    private Player dm;
-    private ArrayList<Player> players = new ArrayList<>();
+    private DM dm;
+    private HashMap<String,Player> players = new HashMap<>();
     private Grid grid = new Grid();
     private MapImage backGround;
     private Music bgm;
     private ResourceSet resourceSet = ResourceSet.getInstance();
 
     public Model(String dm){
-        this.dm = new Player(dm);
-        players.add(this.dm);
+        this.dm = new DM(dm);
+        players.put(dm,this.dm);
     }
     public String toJson(){
         return "";
         //TODO
     }
 
-    public void addToken(URI uri, Pos pos) throws PosNotFreeException {
-        TokenImage image = resourceSet.getToken(uri);
+    public void addToken(URI uri, Pos pos) throws PosNotFreeException, PosOutOfBoundException {
+        TokenImage image = new TokenImage(uri,"",false);
         grid.addToken(pos,image);
     }
 
@@ -38,11 +39,11 @@ public class Model {
         return backGround;
     }
 
-    public Player getDm(){
+    public DM getDm(){
         return dm;
     }
 
-    public ArrayList<Player> getPlayers(){
+    public HashMap<String,Player> getPlayers(){
         return players;
     }
 
@@ -78,13 +79,14 @@ public class Model {
 
     }
 
-    public void moveToken(Pos start, Pos end, String playerID) throws NoTokenException, PosNotFreeException, NotYourTokenException, PosOutOfBoundException {//TODO
-        grid.moveToken(start,end,playerID);
+    public void moveToken(Pos start, Pos end, String playerID) throws NoTokenException, PosNotFreeException, NotYourTokenException, PosOutOfBoundException, NoPlayerException {//TODO
+        grid.moveToken(start,end,getPlayer(playerID));
     }
 
-    public void addPlayer(String playerId){
+    public void addPlayer(String playerId) throws PlayerOnlineException {
         Player player = new Player(playerId);
-        players.add(player);
+        if(players.containsKey(playerId))throw new PlayerOnlineException();
+        players.put(playerId,player);
     }
 
     public void setGrid(int rows, int columns) throws NegativeException {
@@ -93,5 +95,15 @@ public class Model {
 
     public boolean checkDm(String playerId){
         return this.dm.equals(playerId);
+    }
+
+    public Player getPlayer(String playerId) throws NoPlayerException {
+        Player player = players.get(playerId);
+        if(player == null)throw new NoPlayerException();
+        return player;
+    }
+
+    public void initFromData(){
+        //TODO
     }
 }
