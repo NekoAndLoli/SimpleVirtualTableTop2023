@@ -6,6 +6,8 @@ package www.polimi.it.Communication;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
+import www.polimi.it.Actions.Action;
+import www.polimi.it.Actions.AddTokenAction;
 import www.polimi.it.Controller.Controller;
 import www.polimi.it.Exception.PlayerOnlineException;
 
@@ -20,12 +22,14 @@ public class Server extends WebSocketServer{
     private Integer roomID;
     private HashMap<WebSocket,String> userConnections;
     private Set<String> usernames;
+    private HashMap<WebSocket,Controller> player_room;
 
     public Server(int port) {
         super(new InetSocketAddress(port));
         rooms = new HashMap<>();
         userConnections = new HashMap<>();
         usernames = new HashSet<>();
+        player_room = new HashMap<>();
     }
 
     @Override
@@ -36,18 +40,27 @@ public class Server extends WebSocketServer{
     @Override
     public void onClose(WebSocket webSocket, int i, String s, boolean b) {
         String username = userConnections.remove(webSocket);
-        System.out.println(username == null ? webSocket : username + " has gone offline!");
+        if(username != null){
+            usernames.remove(username);
+            System.out.println(username + " has gone offline!");
+        }else{
+            System.out.println(webSocket + " has gone offline!");
+        }
     }
 
     @Override
     public void onMessage(WebSocket webSocket, String s) {
-
+        //TODO
+        Controller room = player_room.get(webSocket);
+        if(room!=null){
+            room.manageAction(buildAction(s));
+        }
         System.out.println(webSocket + ": " + s);
     }
 
     @Override
     public void onError(WebSocket webSocket, Exception e) {
-
+        e.printStackTrace();
     }
 
     @Override
@@ -62,7 +75,6 @@ public class Server extends WebSocketServer{
     }
 
     private void joinRoom(String playerId, Integer roomId, String pw) {
-        //TODO maybe better to check in controller
         Controller room = rooms.get(roomId);
         if(room.checkPw(pw)){
             try {
@@ -78,8 +90,13 @@ public class Server extends WebSocketServer{
     }
 
 
-    private void login(WebSocket webSocket,String s) throws PlayerOnlineException {//TODO
+    private void login(WebSocket webSocket,String s) throws PlayerOnlineException {//TODO password
         if(!usernames.add(s))throw new PlayerOnlineException();
         userConnections.put(webSocket,s);
+    }
+
+    private Action buildAction(String s){
+        //TODO
+        return null;
     }
 }
