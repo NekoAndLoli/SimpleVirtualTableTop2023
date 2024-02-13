@@ -1,5 +1,6 @@
 package www.polimi.it.Controller;
 
+import org.java_websocket.WebSocket;
 import www.polimi.it.Actions.Action;
 import www.polimi.it.Exception.*;
 import www.polimi.it.Model.Model;
@@ -12,8 +13,35 @@ public class Controller {
     private final String pw;
     private boolean closed = false;
 
-    public void manageAction(Action action) throws NoTokenException, PosNotFreeException, NotYourTokenException, NotDMException, NegativeException, PosOutOfBoundException, NoPlayerException {
+    public void manageAction(WebSocket webSocket, Action action) {
+        //TODO finish
+        String message="";
+        try {
             action.run(model);
+        }catch (NoTokenException e) {
+            e.printStackTrace();
+            message = "No token selected.";
+        } catch (PosNotFreeException e) {
+            e.printStackTrace();
+            message = "Cell is already taken.";
+        } catch (NotYourTokenException e) {
+            e.printStackTrace();
+            message = "You have not permission on this token.";
+        } catch (NotDMException e) {
+            e.printStackTrace();
+            message = "You are not the Dungeon Master.";
+        } catch (NegativeException e) {
+            e.printStackTrace();
+            message = "Number should be positive.";
+        } catch (PosOutOfBoundException e) {
+            e.printStackTrace();
+            message = "Cell position is out of map.";
+        } catch (NoPlayerException e) {
+            e.printStackTrace();
+            message = "This player does not exist.";
+        }finally {
+            sendError(webSocket,message);
+        }
     }
 
     public Controller(int roomId, String pw, String playerID){
@@ -41,4 +69,7 @@ public class Controller {
         model.addPlayer(playerID);
     }
 
+    private void sendError(WebSocket webSocket,String s){
+        webSocket.send("[ERROR]:"+s);
+    }
 }
