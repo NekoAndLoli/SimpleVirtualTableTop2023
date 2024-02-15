@@ -62,7 +62,8 @@ public class Controller {
     }
 
     public boolean checkPw(String pw){
-        return pw.equals(pw);
+        if(this.pw == null)return true;
+        return this.pw.equals(pw);
     }
 
     public void addPlayer(String playerID) throws PlayerOnlineException {

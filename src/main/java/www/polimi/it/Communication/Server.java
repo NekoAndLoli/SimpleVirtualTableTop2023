@@ -21,7 +21,7 @@ import java.util.Set;
 
 public class Server extends WebSocketServer{
     private HashMap<Integer,Controller> rooms;
-    private Integer roomID;
+    private Integer roomID = 0;
     private HashMap<WebSocket,String> userConnections;
     private Set<String> usernames;
     private HashMap<WebSocket,Controller> player_room;
@@ -36,7 +36,7 @@ public class Server extends WebSocketServer{
 
     @Override
     public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
-        webSocket.send("ciao");
+        //Nothing to do
     }
 
     @Override
@@ -52,6 +52,7 @@ public class Server extends WebSocketServer{
 
     @Override
     public void onMessage(WebSocket webSocket, String s) {
+        System.out.println(s);
         //TODO everything
         Controller room = player_room.get(webSocket);
         if(room!=null){//if the player has joined a room
@@ -69,22 +70,28 @@ public class Server extends WebSocketServer{
         if(s.indexOf("login:")==0){
             try {
                 login(webSocket,s);
+                webSocket.send("Success");
             } catch (PlayerOnlineException | MessageFormatException e) {
                 e.printStackTrace();
+                webSocket.send("Fail");
             }
         }
         if(s.indexOf("create:")==0){
             try {
                 createRoom(webSocket,s);//TODO
+                webSocket.send("Success");
             } catch (MessageFormatException e) {
                 e.printStackTrace();
+                webSocket.send("Fail");
             }
         }
         if(s.indexOf("join:")==0){
             try {
                 joinRoom(webSocket,s);//TODO
-            } catch (PlayerOnlineException | MessageFormatException | NoRoomException e) {
+                webSocket.send("Success");
+            } catch (PlayerOnlineException | MessageFormatException | NoRoomException | WrongPWException | NoPlayerException e) {
                 e.printStackTrace();
+                webSocket.send("Fail");
             }
         }
         System.out.println(webSocket + ": " + s);
@@ -102,28 +109,39 @@ public class Server extends WebSocketServer{
 
     private void createRoom(WebSocket webSocket,String s) throws MessageFormatException {
         String[] strings = splitter(s);
-        if(!checkFormat(strings,3))throw new MessageFormatException();
-        String pw = strings[1];
-        String dm = strings[2];
+        if(!checkFormat(strings,2,3))throw new MessageFormatException();
+        String dm = strings[1];
+        String pw = null;
+        if(strings.length==3){
+            pw = strings[2];
+        }
         //TODO check input
         Controller room = new Controller(roomID,pw,dm);
         rooms.put(roomID,room);
+        System.out.println("Created room id:"+roomID);
         roomID++;
         player_room.put(webSocket,room);
     }
 
-    private void joinRoom(WebSocket webSocket,String s) throws NoRoomException, PlayerOnlineException, MessageFormatException {
+    private void joinRoom(WebSocket webSocket,String s) throws NoRoomException, PlayerOnlineException, MessageFormatException, WrongPWException, NoPlayerException {
         String[] strings = splitter(s);
-        if(!checkFormat(strings,4))throw new MessageFormatException();
+        if(!checkFormat(strings,2,3))throw new MessageFormatException();
+
         Integer roomId = Integer.parseInt(strings[1]);
-        String pw = strings[2];
-        String playerId = strings[3];
+        String pw = null;
+        if(strings.length==3){
+            pw = strings[2];
+        }
+        String playerId = userConnections.get(webSocket);
+        if (playerId == null)throw new NoPlayerException();
         //TODO check inputs
         Controller room = rooms.get(roomId);
         if(room == null)throw new NoRoomException();
         if(room.checkPw(pw)){
             room.addPlayer(playerId);
             player_room.put(webSocket,room);
+        }else{
+            throw new WrongPWException();
         }
     }
 
@@ -144,13 +162,13 @@ public class Server extends WebSocketServer{
         String[] strings = splitter(s);
         if(!checkFormat(strings,2,3))throw new MessageFormatException();
         userConnections.put(webSocket,"-"+strings[1]);
-        //TODO password;
-        String pw = strings[2];
+        //TODO password
+        //String pw = strings[2];
     }
 
     private Action buildAction(String s) throws MessageFormatException, URISyntaxException, NegativeException,NumberFormatException {
         String[] strings = splitter(s);
-        Action action = null;
+        Action action;
         String playerId = strings[1];
         int x,y;
         URI uri;
