@@ -158,10 +158,11 @@ public class Server extends WebSocketServer{
      * @throws MessageFormatException
      */
     private void login(WebSocket webSocket,String s) throws PlayerOnlineException, MessageFormatException {//TODO password
-        if(!usernames.add(s))throw new PlayerOnlineException();
         String[] strings = splitter(s);
         if(!checkFormat(strings,2,3))throw new MessageFormatException();
-        userConnections.put(webSocket,"-"+strings[1]);
+        String username = "User:"+strings[1];
+        if(!usernames.add(username))throw new PlayerOnlineException();
+        userConnections.put(webSocket,username);
         //TODO password
         //String pw = strings[2];
     }
