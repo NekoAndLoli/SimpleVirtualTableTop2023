@@ -1,11 +1,12 @@
 package www.polimi.it.Model;
 
+import org.java_websocket.WebSocket;
 import www.polimi.it.Exception.NegativeException;
 
 public class Player implements HasStats {
     private String playerID;
     private Stats stats = new Stats();
-
+    private WebSocket webSocket;
     public String getPlayerID() {
         return playerID;
     }
@@ -49,4 +50,19 @@ public class Player implements HasStats {
         return false;
     }
 
+    public void setWebSocket(WebSocket webSocket){
+        this.webSocket = webSocket;
+    }
+
+    public WebSocket getWebSocket(){
+        return webSocket;
+    }
+
+    public void send(String s){
+        try{
+            webSocket.send(s);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }

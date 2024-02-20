@@ -146,4 +146,16 @@ public class Grid {
         if(t == null)return null;
         return t.getImage();
     }
+
+    public String getTokenInfo(){
+        String res = "";
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                if(grid[i][j]!=null){
+                    res+=i+" "+j+" "+grid[i][j].getImage().getUri().toString()+" ";
+                }
+            }
+        }
+        return res;
+    }
 }

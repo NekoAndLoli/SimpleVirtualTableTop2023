@@ -48,7 +48,7 @@ public class ModelTest extends TestCase {
         try {
             Pos pos = new Pos(0,1);
             Pos end = new Pos(1,1);
-            model.addPlayer("player");
+            model.addPlayer("player",null);
             model.addToken(new URI("uri"),pos);
             model.moveToken(pos,end,"player");
         } catch (NegativeException | URISyntaxException | PosNotFreeException | PosOutOfBoundException | NoTokenException | NotYourTokenException | NoPlayerException | PlayerOnlineException e) {
@@ -60,8 +60,8 @@ public class ModelTest extends TestCase {
     @Test
     public void testAddPlayer() {
         try {
-            model.addPlayer("player");
-            Assertions.assertThrows(PlayerOnlineException.class,()->model.addPlayer("player"));
+            model.addPlayer("player",null);
+            Assertions.assertThrows(PlayerOnlineException.class,()->model.addPlayer("player",null));
         } catch (PlayerOnlineException e) {
             e.printStackTrace();
             assertFalse(true);

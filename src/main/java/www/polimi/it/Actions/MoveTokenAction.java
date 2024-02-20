@@ -7,8 +7,10 @@ import www.polimi.it.Model.Pos;
 public class MoveTokenAction extends Action{
     Pos posStart;
     Pos posEnd;
-    public MoveTokenAction(String playerId, Pos posEnd, Pos posStart){
+    public MoveTokenAction(String playerId,  Pos posStart, Pos posEnd){
         super(ActionType.MOVE_TOKEN,playerId);
+        this.posEnd = posEnd;
+        this.posStart = posStart;
     }
     @Override
     public void run(Model model) throws NoTokenException, PosNotFreeException, NotYourTokenException, PosOutOfBoundException, NoPlayerException {

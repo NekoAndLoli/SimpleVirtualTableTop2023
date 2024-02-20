@@ -13,6 +13,7 @@ public class Controller {
     private final String pw;
     private boolean closed = false;
 
+
     public void manageAction(WebSocket webSocket, Action action) {
         //TODO finish
         String message="";
@@ -40,7 +41,7 @@ public class Controller {
             e.printStackTrace();
             message = "This player does not exist.";
         }finally {
-            sendError(webSocket,message);
+            if(message!="")sendError(webSocket,message);
         }
     }
 
@@ -66,11 +67,37 @@ public class Controller {
         return this.pw.equals(pw);
     }
 
-    public void addPlayer(String playerID) throws PlayerOnlineException {
-        model.addPlayer(playerID);
+    public void addPlayer(String playerID,WebSocket socket) throws PlayerOnlineException {
+        model.addPlayer(playerID,socket);
+        model.send("n"+playerID,socket);
     }
 
     private void sendError(WebSocket webSocket,String s){
         webSocket.send("[ERROR]:"+s);
+    }
+
+
+    public String getUpdate(){
+        return model.getUpdate();
+    }
+
+    public void setDMSocket(WebSocket socket){
+        model.getDm().setWebSocket(socket);
+    }
+
+    public String getinfo(){
+        return model.getInfo()+"|"+roomId+"|"+getRoomname();
+    }
+
+    public String getRoomname(){
+        return     model.getRoomName();
+    }
+
+    public void setRoomName(String s){
+        model.setRoomName(s);
+    }
+
+    public Integer getRoomId() {
+        return roomId;
     }
 }

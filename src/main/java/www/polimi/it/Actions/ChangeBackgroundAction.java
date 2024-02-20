@@ -16,6 +16,7 @@ public class ChangeBackgroundAction extends Action {
     public void run(Model model) throws NotDMException {
         if(model.checkDm(this.getPlayerId())){
             model.changeMap(uri);
+            model.send("b"+model.getBackGround().getUri().toString());
         }else {
             throw new NotDMException();
         }

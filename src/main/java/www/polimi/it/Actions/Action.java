@@ -1,5 +1,6 @@
 package www.polimi.it.Actions;
 
+import org.java_websocket.WebSocket;
 import www.polimi.it.Exception.*;
 import www.polimi.it.Model.Model;
 

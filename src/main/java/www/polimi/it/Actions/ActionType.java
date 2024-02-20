@@ -5,5 +5,6 @@ public enum ActionType {
     SET_GRID,
     CHANGE_BACKGROUND,
     MOVE_TOKEN,
-    REMOVE_TOKEN
+    REMOVE_TOKEN,
+    CHAT
 }
