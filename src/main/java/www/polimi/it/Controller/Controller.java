@@ -63,7 +63,7 @@ public class Controller {
     }
 
     public boolean checkPw(String pw){
-        if(this.pw == null)return true;
+        if(this.pw == null || this.pw=="")return true;
         return this.pw.equals(pw);
     }
 
@@ -73,7 +73,7 @@ public class Controller {
     }
 
     private void sendError(WebSocket webSocket,String s){
-        webSocket.send("[ERROR]:"+s);
+        webSocket.send(" [ERROR]:"+s);
     }
 
 
@@ -99,5 +99,9 @@ public class Controller {
 
     public Integer getRoomId() {
         return roomId;
+    }
+
+    public void removePlayer(String username) {
+        model.removePlayer(username);
     }
 }

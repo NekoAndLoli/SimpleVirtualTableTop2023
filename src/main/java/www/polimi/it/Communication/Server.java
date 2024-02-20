@@ -23,9 +23,9 @@ public class  Server extends WebSocketServer{
     private HashMap<Integer,Controller> rooms;
     private Integer roomID = 0;
     private HashMap<WebSocket,String> userConnections;
-    private Set<String> usernames;
+    private HashMap<String,WebSocket> connUsers;
+    private Set<String> usernames;//online Users
     private HashMap<WebSocket,Controller> player_room;
-    private HashMap<Controller,WebSocket> room_player;
     private HashMap<String,String> player_password;
 
     public Server(int port) {
@@ -34,7 +34,8 @@ public class  Server extends WebSocketServer{
         userConnections = new HashMap<>();
         usernames = new HashSet<>();
         player_room = new HashMap<>();
-        room_player = new HashMap<>();
+        player_password = new HashMap<>();
+        connUsers = new HashMap<>();
     }
 
     @Override
@@ -46,7 +47,12 @@ public class  Server extends WebSocketServer{
     public void onClose(WebSocket webSocket, int i, String s, boolean b) {
         String username = userConnections.remove(webSocket);
         if(username != null){
+            connUsers.remove(username);
             usernames.remove(username);
+            Controller c = player_room.remove(webSocket);
+            if(c!=null){
+                c.removePlayer(username);
+            }
             System.out.println(username + " has gone offline!");
         }else{
             System.out.println(webSocket + " has gone offline!");
@@ -77,9 +83,13 @@ public class  Server extends WebSocketServer{
             try {
                 login(webSocket,s);
                 webSocket.send("lSuccess");
-            } catch (PlayerOnlineException | MessageFormatException e) {
+            } catch (PlayerOnlineException  e) {
+                webSocket.send("This username is already taken.");
+            } catch (MessageFormatException e){
                 e.printStackTrace();
                 webSocket.send("Fail");
+            } catch (WrongPWException e) {
+                webSocket.send("Wrong password, please try again.");
             }
         }
         if(s.indexOf("create:")==0){
@@ -100,9 +110,14 @@ public class  Server extends WebSocketServer{
                     room = player_room.get(webSocket);
                     webSocket.send("i"+room.getinfo());//To test
                 }
-            } catch (PlayerOnlineException | MessageFormatException | NoRoomException | WrongPWException | NoPlayerException e) {
+            } catch (PlayerOnlineException | MessageFormatException |  NoPlayerException e) {
                 e.printStackTrace();
-                webSocket.send("Fail");
+                webSocket.send("Please refresh the page and try again.");
+            } catch (WrongPWException e){
+                webSocket.send("Wrong password, please try again.");
+            }
+            catch (NoRoomException e){
+                webSocket.send("Room does not exist, please try again.");
             }
         }
         System.out.println(webSocket + ": " + s);
@@ -174,14 +189,25 @@ public class  Server extends WebSocketServer{
      * @throws PlayerOnlineException
      * @throws MessageFormatException
      */
-    private void login(WebSocket webSocket,String s) throws PlayerOnlineException, MessageFormatException {//TODO password
+    private void login(WebSocket webSocket,String s) throws PlayerOnlineException, MessageFormatException, WrongPWException {//TODO password
         String[] strings = splitter(s);
         if(!checkFormat(strings,2,3))throw new MessageFormatException();
         String username = strings[1].substring(1);
-        if(!usernames.add(username))throw new PlayerOnlineException();
-        userConnections.put(webSocket,username);
-        //TODO password
-        //String pw = strings[2];
+        if(player_password.get(username)!=null){//signed up
+            if(!checkFormat(strings,3))throw new WrongPWException();//has no password
+            String password = strings[2].substring(1);
+            if(!player_password.get(username).equals(password)) throw new WrongPWException();//pw not equals
+            if(!usernames.add(username)){//re login
+                deconnect(username);
+            }
+        }else{
+            if(!usernames.add(username))throw new PlayerOnlineException();
+            if(checkFormat(strings,3)){//has password
+                String password = strings[2].substring(1);
+                player_password.put(username,password);
+            }
+        }
+        connect(webSocket,username);
     }
 
     private Action buildAction(String s,String playerId) throws MessageFormatException, URISyntaxException, NegativeException, NumberFormatException, PlayerInRoomException {
@@ -243,9 +269,24 @@ public class  Server extends WebSocketServer{
     private String[] splitter(String s){
         return s.split("\n");
     }
+
+    /**
+     *
+     * @param s
+     * @param n
+     * @return true if ok
+     */
     private boolean checkFormat(String[] s,int n){
         return checkFormat(s,n,n);
     }
+
+    /**
+     *
+     * @param s
+     * @param min
+     * @param max
+     * @return true id format is ok
+     */
     private boolean checkFormat(String[] s,int min, int max){
         int count = 0;
         for(int i = 0;i<s.length && i<min;i++){
@@ -254,5 +295,21 @@ public class  Server extends WebSocketServer{
         if(count!=min)return false;
         if (s.length>max)return false;
         return true;
+    }
+
+    private void connect(WebSocket socket, String username){
+        userConnections.put(socket,username);
+        connUsers.put(username,socket);
+    }
+
+    private void deconnect(String username){
+        WebSocket socket = connUsers.remove(username);
+        userConnections.remove(socket);
+        socket.close(1000,"logged on other place.");
+    }
+
+    private void deconnect(WebSocket socket){
+        String username = userConnections.remove(socket);
+        connUsers.remove(username);
     }
 }

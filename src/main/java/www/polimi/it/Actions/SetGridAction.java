@@ -17,6 +17,7 @@ public class SetGridAction extends Action{
     public void run(Model model) throws NotDMException, NegativeException {
         if(model.checkDm(this.getPlayerId())) {
             model.setGrid(this.rows,this.columns);
+            model.send("s"+this.rows+" "+this.columns);
         }else {
             throw new NotDMException();
         }

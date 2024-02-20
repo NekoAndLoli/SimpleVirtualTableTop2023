@@ -117,8 +117,14 @@ public class Model {
     }
 
     public void addPlayer(String playerId, WebSocket socket) throws PlayerOnlineException {
-        Player player = new Player(playerId);
         if(players.containsKey(playerId))throw new PlayerOnlineException();
+        Player player;
+        if(playerId.equals(dm.getPlayerID())){
+            dm = new DM(playerId);
+            player = dm;
+        }else {
+            player= new Player(playerId);
+        }
         player.setWebSocket(socket);
         players.put(playerId,player);
     }
@@ -161,7 +167,7 @@ public class Model {
             tokens = tokens.substring(0, tokens.length() - 1);
         }
         String menuToken = "";
-        return playerList+"|"+tokens+"|"+mapUrl+"|"+dm.getPlayerID();
+        return playerList+"|"+tokens+"|"+mapUrl+"|"+grid.getRows()+"|"+grid.getColumns()+"|"+dm.getPlayerID();
     }
 
     public void send(String message){
@@ -180,5 +186,10 @@ public class Model {
 
     public int diceRoll(int d){
         return random.nextInt(d+1);
+    }
+
+    public void removePlayer(String username) {
+        players.remove(username);
+        send("o"+username);
     }
 }
