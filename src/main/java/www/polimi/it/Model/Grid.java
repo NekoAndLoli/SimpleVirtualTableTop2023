@@ -44,7 +44,7 @@ public class Grid {
      * @param rows
      */
     public void setRows(Integer rows) throws NegativeException {
-        if(rows<0)throw new NegativeException("rows negative");
+        if(rows<1)throw new NegativeException("rows negative");
         this.rows = rows;
         generateGrid();
     }
@@ -54,14 +54,14 @@ public class Grid {
      * @param columns
      */
     public void setColumns(Integer columns) throws NegativeException {
-        if(columns<0)throw new NegativeException("columns negative");
+        if(columns<1)throw new NegativeException("columns negative");
         this.columns = columns;
         generateGrid();
     }
 
     public void setGrid(Integer rows,Integer columns) throws NegativeException {
-        if(rows<0)throw new NegativeException("rows negative");
-        if(columns<0)throw new NegativeException("columns negative");
+        if(rows<1)throw new NegativeException("rows negative");
+        if(columns<1)throw new NegativeException("columns negative");
         this.rows = rows;
         this.columns = columns;
         generateGrid();

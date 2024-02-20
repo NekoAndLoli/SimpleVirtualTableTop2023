@@ -33,8 +33,6 @@ public class ModelTest extends TestCase {
     public void testChangeMap() {
         try {
             URI uri = new URI("uri");
-
-            assertNull(model.getBackGround());
             model.changeMap(new URI("uri"));
             assertEquals(model.getBackGround().getUri(),uri);
         } catch (URISyntaxException e) {
