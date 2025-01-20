@@ -15,7 +15,7 @@ public class ServerApp
         Server server;
         System.out.println( "Hello World!" );
         try {
-            server = new Server(5555);
+            server = new Server(6666);
             server.run();
         } catch (Exception e) {
             e.printStackTrace();
